@@ -1,4 +1,4 @@
-# Agent
+# Analysis Agent
 # planner
 questions_features_analysis_agent_planner_prompt = """
 For each task, in planning process, you have to follow these steps in planning: 
@@ -68,4 +68,15 @@ You have to follow the following guidelines:
     You must follow the planning instructions. 
 3. Review your results. 
 4. Comments you give should be clear and logical. 
+"""
+# Converter Agent
+# Description
+converter_agent_description = """
+This agent will convert the result from the analysis agent to the string that can be parsed to json to store in the state. 
+"""
+# Instruction
+converter_agent_instruction = """
+You are responsible for converting the result of analysis agent to string that can be converted to json and correspond to analysis agent output schema. 
+1. You must not alter the information in the original answer. 
+2. You must use your tool to check the result until the tool returns that the validation is successful. 
 """

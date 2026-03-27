@@ -10,6 +10,7 @@ from cirno_questions_generator_agent.prompt import (
 from cirno_questions_generator_agent.data_model import (
     RouterAgentInputSchema
 )
+from questions_features_analysis_agent.agent import questions_features_analysis_sequential_agent
 
 logger = getLogger("Questions Setter Agent")
 
@@ -28,5 +29,8 @@ class agent:
             model=self.llm,
             name="questions_setter_router_agent",
             description=router_agent_description,
-            input_schema=RouterAgentInputSchema
+            input_schema=RouterAgentInputSchema,
+            sub_agents=[
+                questions_features_analysis_sequential_agent
+            ]
         )
