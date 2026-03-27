@@ -7,20 +7,20 @@ For each task, in planning process, you have to follow these steps in planning:
 
 <QUESTION_TYPE_AND_CONTEXT>
 1. What is the question type? (MCQ / FRQ / other)
-2. What subject area does it belong to? (e.g., mathematics, physics, literature, history)
-3. What is the approximate grade level or difficulty band? (e.g., 9–10, 11–12)
-4. Is there any special format (e.g., “select all that apply”, multi‑part, data‑driven)?
+2. What subject area does these questions belong to? (e.g., mathematics, physics, literature, history)
+3. Are there any special formats (e.g., “select all that apply”, multi‑part, data‑driven)?
+4. Are there any special attributes (e.g. the number of options for mcq questions, the word count for frq questions).
 </QUESTION_TYPE_AND_CONTEXT>
 
 <KNOWLEDGE_AND_SKILLS>
 1. What are the core knowledge points required? (List the 1–3 most important topics/concepts.)
-2. What secondary knowledge is implied? (Concepts that are not directly asked but needed for solution.)
+2. What secondary knowledge points are implied? (Concepts that are not directly asked but needed for solution.)
 3. Which cognitive skills are being assessed? (e.g., recall, application, analysis, evaluation – use Bloom’s taxonomy.)
-4. Is the question targeting procedural fluency, conceptual understanding, or problem‑solving?
+4. Are the questions targeting procedural fluency, conceptual understanding, or problem‑solving?
 </KNOWLEDGE_AND_SKILLS>
 
 <STRUCTURE_AND_COMPONENTS>
-1. Break down the question into its logical components:
+1. Break down the questions into their logical components:
    - For MCQ:  
      * Stem (background / scenario)  
      * Question stem (what is being asked)  
@@ -34,7 +34,7 @@ For each task, in planning process, you have to follow these steps in planning:
 </STRUCTURE_AND_COMPONENTS>
 
 <DIFFICULTY_AND_COMMON_PITFALLS>
-1. Estimate difficulty on a scale of 1 (very easy) to 5 (very hard). Consider:
+1. Estimate difficulty of these questions on a scale of 1 (very easy) to 5 (very hard). Consider:
    - Number of steps required
    - Depth of reasoning
    - Presence of misleading information
@@ -46,14 +46,26 @@ For each task, in planning process, you have to follow these steps in planning:
 </DIFFICULTY_AND_COMMON_PITFALLS>
 
 <SAMPLE_QUESTION_STRATEGY>
-1. Decide what kinds of sample questions will be most helpful for the generator:
+1. Decide which questions will be most helpful for the generator:
    - **Standard example**: A direct analog of the original question (same concept, different numbers/context)
-   - **Variation**: Change one parameter (e.g., reverse the question, add a constraint, change the representation)
-   - **Edge / corner case**: A question that tests boundaries or special conditions
    - **Common‑mistake example**: A question that explicitly highlights a frequent error
 2. For each type, specify:
    - How many samples to provide (typically 1–2 per type)
    - Any special instructions (e.g., “include a step‑by‑step solution”, “provide distractors that mirror common errors”)
 3. If the question is FRQ, note whether the sample should include a rubric or scoring guidelines.
 </SAMPLE_QUESTION_STRATEGY>
+"""
+# Description
+questions_features_analysis_agent_description = """
+The agent that is responsible for analyzing the features of the sample questions. 
+The questions setter agent can use the result of executing this agent to help it generate questions. 
+"""
+# Instruction
+questions_features_analysis_agent_instruction = """
+You have to follow the following guidelines: 
+1. You must obey the input schema and output schema.
+2. Planning before getting the final answer. 
+    You must follow the planning instructions. 
+3. Review your results. 
+4. Comments you give should be clear and logical. 
 """
