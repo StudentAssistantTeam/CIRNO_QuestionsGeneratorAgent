@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import List
 
+
 # Agent input schema
 class QuestionsFeaturesAnalysisAgent(BaseModel):
     sample_questions: List[str] = Field(

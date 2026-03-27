@@ -3,7 +3,7 @@ from pathlib import Path
 
 # env file path config
 BASE_DIR = Path(__file__).resolve().parent.parent
-ENV_FILE_PATH = BASE_DIR / "cirno_questions_generator_agent.env"
+ENV_FILE_PATH = BASE_DIR / "questions_features_analysis_agent.env"
 
 
 # Settings

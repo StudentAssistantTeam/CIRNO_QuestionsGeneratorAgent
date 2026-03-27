@@ -26,7 +26,7 @@ class agent:
         # Defining base agent
         self.router_agent = LlmAgent(
             model=self.llm,
-            name="questions_setter_agent",
+            name="questions_setter_router_agent",
             description=router_agent_description,
             input_schema=RouterAgentInputSchema
         )

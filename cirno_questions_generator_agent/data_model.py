@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Optional, List
 
+
 # Router agent input schema
 class RouterAgentInputSchema(BaseModel):
     topic: str = Field(

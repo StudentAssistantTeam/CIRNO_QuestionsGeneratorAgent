@@ -1,12 +1,9 @@
-from logging import getLogger
 # adk dependencies
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.agents import LlmAgent
 # project dependencies
 from questions_setter_agent.config import settings
 from questions_setter_agent.prompt import agent_description
-
-logger = getLogger("Questions Setter Agent")
 
 # Defining llm
 llm = LiteLlm(
