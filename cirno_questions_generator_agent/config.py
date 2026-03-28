@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     llm_model_name: str = ""
     llm_api_key: str = ""
     llm_base_url: str = ""
+    a2a_port: int = 4004
 
     model_config = SettingsConfigDict(
         env_file=ENV_FILE_PATH,

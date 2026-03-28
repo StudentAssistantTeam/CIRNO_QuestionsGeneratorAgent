@@ -78,6 +78,7 @@ def create_questions_generator_agent():
         name="questions_generator_agent",
         description=questions_setter_agent_description,
         instruction=questions_setter_agent_instruction,
+        output_schema=QuestionsSetterAgentOutputSchema,
         output_key=QUESTIONS_KEY
     )
 
@@ -111,11 +112,8 @@ def create_refractor_agent():
         name="refractor_agent",
         description=refractor_description,
         instruction=refractor_instruction,
-        planner=PlanReActPlanner(),
+        output_schema=QuestionsSetterAgentOutputSchema,
         output_key=QUESTIONS_KEY,
-        tools=[
-            validate_result_questions_generation
-        ]
     )
 
 

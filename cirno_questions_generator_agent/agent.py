@@ -51,6 +51,7 @@ def create_router_agent():
         sub_agents=[
             create_questions_setter_agent()
         ],
+        tools=[analysis_agent_tool],
         planner=PlanReActPlanner(),
         before_agent_callback=update_initial_topic_state
     )
