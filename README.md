@@ -129,10 +129,33 @@ USE_DB_PUSH_NOTIFICATIONS=false
    docker build --build-arg MIRROR=https://pypi.tuna.tsinghua.edu.cn/simple -t cirno-questions-agent .
    ```
 
-2. **Run the container**
+2. **Run the container with all environment files**
+   
+   The application requires four separate environment files. You need to mount all of them to the container:
+
    ```bash
+   docker run -p 4004:4004 \
+     -v $(pwd)/cirno_questions_generator_agent.env:/app/cirno_questions_generator_agent.env \
+     -v $(pwd)/questions_features_analysis_agent.env:/app/questions_features_analysis_agent.env \
+     -v $(pwd)/questions_setter_agent.env:/app/questions_setter_agent.env \
+     -v $(pwd)/remote_agents.env:/app/remote_agents.env \
+     cirno-questions-agent
+   ```
+
+   **Alternative approach:** If you have all environment variables in a single `.env` file, you can create symlinks or copy the file:
+
+   ```bash
+   # Create symlinks for all required env files
+   ln -sf .env cirno_questions_generator_agent.env
+   ln -sf .env questions_features_analysis_agent.env
+   ln -sf .env questions_setter_agent.env
+   ln -sf .env remote_agents.env
+   
+   # Then run with volume mount for the single .env file
    docker run -p 4004:4004 -v $(pwd)/.env:/app/.env cirno-questions-agent
    ```
+
+   > **Note:** The configuration files must be present in the container's `/app/` directory as the agents look for them at specific paths relative to their module locations.
 
 ## API Usage
 
