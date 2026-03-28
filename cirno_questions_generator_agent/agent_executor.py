@@ -93,6 +93,7 @@ class agent_executor(AgentExecutor):
             )
 
             response_text = ''
+            step_no = 0
 
             # 4. Stream events from ADK Runner
             async for event in self.runner.run_async(
@@ -106,7 +107,7 @@ class agent_executor(AgentExecutor):
                         and event.content.parts
                 ):
                     response_text = event.content.parts[0].text
-                else:
+                elif event.content.parts:
                     for content in event.content.parts:
                         if hasattr(content, 'text'):
                             intermediate_json = {
@@ -116,8 +117,9 @@ class agent_executor(AgentExecutor):
                             }
                             await updater.add_artifact(
                                 [Part(root=TextPart(text=json.dumps(intermediate_json)))],
-                                name="intermediate_content"
+                                name=f"intermediate_content_{step_no}"
                             )
+                            step_no += 1
 
             # 5. Final JSON Artifact with "finish" step
             final_json = {
