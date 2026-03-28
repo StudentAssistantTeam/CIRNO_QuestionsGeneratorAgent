@@ -10,7 +10,9 @@ from questions_setter_agent.prompt import (
     generator_converter_instruction,
     generator_converter_description,
     investigator_instruction,
-    investigator_description
+    investigator_description,
+    refractor_description,
+    refractor_instruction
 )
 from questions_setter_agent.data_model import (
     QuestionsSetterAgentOutputSchema,
@@ -22,7 +24,10 @@ from utility.shared_info import (
     QUESTIONS_KEY,
     ERRORS_KEY
 )
-from tools.util_tools import validate_result_questions_generation
+from tools.util_tools import (
+    validate_result_questions_generation,
+    exit_loop
+)
 
 # Defining llm
 llm = LiteLlm(
@@ -68,10 +73,20 @@ investigator_agent = LlmAgent(
     sub_agents=[
         web_search_agent,
         academics_agent,
+    ],
+    tools=[
+        exit_loop
     ]
 )
 # Refractor Agent
 refractor_agent = LlmAgent(
     model=llm,
-    name="refractor_agent"
+    name="refractor_agent",
+    description=refractor_description,
+    instruction=refractor_instruction,
+    planner=PlanReActPlanner(),
+    output_key=QUESTIONS_KEY,
+    tools=[
+        validate_result_questions_generation
+    ]
 )

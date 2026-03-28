@@ -66,7 +66,7 @@ def validate_result_questions_generation(converted_result: str) -> dict:
             return {
                 "success": False,
                 "result": f"""
-The result converted by you is not correspond to the output schema of the analysis agent
+The result converted by you is not correspond to the output schema of the question generation agent
 , reason: {err}
                 """
             }

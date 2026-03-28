@@ -53,6 +53,7 @@ Follow the following guidelines to check the questions generated:
 1. Find out any factual errors and show it in your answer. 
     Use the subagents to search for relative information. 
 2. If the style of question is not very close to the style of sample questions (if they are provided), reveal it in your answer. 
+3. If you believe the current version is alright, use the exit_loop tool to end the checking process. 
 
 ---
 
@@ -70,4 +71,40 @@ The questions generated:
 + "{" + QUESTIONS_KEY + "}"
 )
 # Refractor agent
+# Description
+refractor_description = """
+This agent will refractor the questions according to the order of investigator. 
+"""
+# Instruction
+refractor_instruction = ("""
+You are responsible for refractor the questions according to the comments of investigator. 
 
+Follow the following guidelines: 
+1. Change the questions according to the comments of investigator. 
+2. For questions you change, also change comment field of the question. 
+3. Use your tool to check whether the format of the questions is correct. 
+    You can only return the final answer if it the validation is successful. 
+
+---
+
+The user might give sample questions to other agents, the features of the sample questions are given below:
+
+"""
++ "{" + ANALYSIS_KEY + "?}"
++"""
+
+---
+
+The questions generated: 
+
+"""
++ "{" + QUESTIONS_KEY + "}"
++"""
+
+---
+
+The questions generated: 
+
+"""
++ "{" + ERRORS_KEY + "}"
+)
