@@ -13,8 +13,10 @@ class Settings(BaseSettings):
     llm_api_key: str = ""
     llm_base_url: str = ""
     # a2a config
+    a2a_host: str = "localhost"
     a2a_port: int = 4004
     use_db_task_store: bool = False
+    use_db_push_notifications: bool = False
 
 
     model_config = SettingsConfigDict(
