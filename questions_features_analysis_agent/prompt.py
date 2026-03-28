@@ -63,11 +63,12 @@ The questions setter agent can use the result of executing this agent to help it
 # Instruction
 questions_features_analysis_agent_instruction = """
 You have to follow the following guidelines: 
-1. You must obey the input schema and output schema.
+1. You must obey the schemas.
 2. Planning before getting the final answer. 
     You must follow the planning instructions. 
 3. Review your results. 
 4. Comments you give should be clear and logical. 
+5. After finished processing, use analysis_result_converter_agent to convert your result to serializable string and store.
 """
 # Converter Agent
 # Description

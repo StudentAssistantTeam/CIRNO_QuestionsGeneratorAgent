@@ -41,6 +41,9 @@ Each objective should be one of the three objectives:
     secondary_knowledge_points: Optional[List[str]] = Field(
         description="The knowledge points that are not directly mentioned but needed to solve this question"
     )
+    relative_material: Optional[str] = Field(
+        description="The reading material, only type in if the questions is based on one material (e.g. the reading passage)."
+    )
 
 
 # Router agent input schema

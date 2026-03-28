@@ -44,6 +44,9 @@ Each objective should be one of the three objectives:
     secondary_knowledge_points: Optional[List[str]] = Field(
         description="The knowledge points that are not directly mentioned but needed to solve this question"
     )
+    relative_material: Optional[str] = Field(
+        description="The reading material, only type in if the question is based on one material (e.g. the reading passage)."
+    )
 
 
 # Agent input schema
@@ -60,9 +63,6 @@ class QuestionsMetadata(BaseModel):
     )
     subject_area: str = Field(
         description="The subject area (e.g. mathematics, physics, etc.)"
-    )
-    reading_material: Optional[str] = Field(
-        description="The reading material, only type in if the questions are all based on one passage."
     )
     special_formats: List[str] = Field(
         description="""

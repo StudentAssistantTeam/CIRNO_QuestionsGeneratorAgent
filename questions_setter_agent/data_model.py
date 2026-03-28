@@ -47,6 +47,9 @@ It can help the investigator agent understand why you want to make this question
     secondary_knowledge_points: Optional[List[str]] = Field(
         description="The knowledge points that are not directly mentioned but needed to solve this question"
     )
+    relative_material: Optional[str] = Field(
+        description="The reading material, only type in if the question is based on one material (e.g. the reading passage)."
+    )
 
 
 # output schema
@@ -63,11 +66,4 @@ class StartupSchema(BaseModel):
     )
     topic: str = Field(
         description="The topic of the questions that is going to be generated"
-    )
-
-
-# Input schema
-class QuestionsSetterAgentInputSchema(BaseModel):
-    QuestionsStartupSchema: Optional[StartupSchema] = Field(
-        description="Fill in this schema **IF YOU WANT THIS AGENT TO GENERATE NEW QUESTIONS**"
     )
