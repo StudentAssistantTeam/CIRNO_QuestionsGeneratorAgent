@@ -12,8 +12,8 @@ from cirno_questions_generator_agent.prompt import (
 from cirno_questions_generator_agent.data_model import (
     RouterAgentInputSchema
 )
-from questions_features_analysis_agent.agent import analysis_agent
-from questions_setter_agent.agent import questions_setter_agent
+from questions_features_analysis_agent.agent import create_analysis_agent
+from questions_setter_agent.agent import create_questions_setter_agent
 from utility.shared_info import ANALYSIS_KEY
 
 logger = getLogger("Questions Setter Agent")
@@ -34,16 +34,22 @@ llm = LiteLlm(
     api_base=settings.llm_base_url,
     api_key=settings.llm_api_key
 )
+
+
 # Defining base agent
-router_agent = LlmAgent(
-    model=llm,
-    name="questions_setter_router_agent",
-    description=router_agent_description,
-    input_schema=RouterAgentInputSchema,
-    sub_agents=[
-        analysis_agent,
-        questions_setter_agent
-    ],
-    planner=PlanReActPlanner(),
-    before_agent_callback=update_initial_topic_state
-)
+def create_router_agent():
+    return LlmAgent(
+        model=llm,
+        name="questions_setter_router_agent",
+        description=router_agent_description,
+        input_schema=RouterAgentInputSchema,
+        sub_agents=[
+            create_analysis_agent(),
+            create_questions_setter_agent()
+        ],
+        planner=PlanReActPlanner(),
+        before_agent_callback=update_initial_topic_state
+    )
+
+
+router_agent = create_router_agent()

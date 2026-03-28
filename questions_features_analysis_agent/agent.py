@@ -26,29 +26,33 @@ llm = LiteLlm(
     api_key=settings.llm_api_key,
     api_base=settings.llm_base_url
 )
+
+
 # Define agents
 # Converter agent
-analysis_result_converter_agent = LlmAgent(
-    name="analysis_result_converter_agent",
-    model=llm,
-    description=converter_agent_description,
-    instruction=converter_agent_instruction,
-    planner=PlanReActPlanner(),
-    input_schema=QuestionsFeaturesAnalysisAgentOutputSchema,
-    output_key=ANALYSIS_KEY,
-    tools=[
-        validate_result_questions_generation
-    ]
-)
+def create_analysis_result_converter_agent():
+    return LlmAgent(
+        name="analysis_result_converter_agent",
+        model=llm,
+        description=converter_agent_description,
+        instruction=converter_agent_instruction,
+        planner=PlanReActPlanner(),
+        input_schema=QuestionsFeaturesAnalysisAgentOutputSchema,
+        output_key=ANALYSIS_KEY,
+        tools=[
+            validate_result_questions_generation
+        ]
+    )
 # Analysis agent
-analysis_agent = LlmAgent(
-    name="analysis_agent",
-    model=llm,
-    instruction=questions_features_analysis_agent_instruction,
-    description=questions_features_analysis_agent_description,
-    planner=FeaturesAnalysisAgentPlanner(),
-    input_schema=QuestionsFeaturesAnalysisAgentInputSchema,
-    sub_agents=[
-        analysis_result_converter_agent
-    ]
-)
+def create_analysis_agent():
+    return LlmAgent(
+        name="analysis_agent",
+        model=llm,
+        instruction=questions_features_analysis_agent_instruction,
+        description=questions_features_analysis_agent_description,
+        planner=FeaturesAnalysisAgentPlanner(),
+        input_schema=QuestionsFeaturesAnalysisAgentInputSchema,
+        sub_agents=[
+            create_analysis_result_converter_agent()
+        ]
+    )
