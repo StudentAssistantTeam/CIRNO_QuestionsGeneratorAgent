@@ -51,7 +51,7 @@ def main():
     agent_card = AgentCard(
         name="question_generator_agent",
         url=f"http://localhost:{settings.a2a_port}/",
-        description="Test agent from file",
+        description="Generate questions according to the request",
         version="0.1.0",
         capabilities=agent_capabilities,
         skills=[
