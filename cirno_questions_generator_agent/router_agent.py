@@ -2,6 +2,7 @@ from logging import getLogger
 # adk dependencies
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.agents import LlmAgent
+from google.adk.planners import PlanReActPlanner
 # project dependencies
 from cirno_questions_generator_agent.config import settings
 from cirno_questions_generator_agent.prompt import (
@@ -32,5 +33,6 @@ class agent:
             input_schema=RouterAgentInputSchema,
             sub_agents=[
                 questions_features_analysis_sequential_agent
-            ]
+            ],
+            planner=PlanReActPlanner()
         )

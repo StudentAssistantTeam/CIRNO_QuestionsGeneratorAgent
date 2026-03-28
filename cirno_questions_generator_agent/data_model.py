@@ -32,8 +32,8 @@ Each objective should be one of the three objectives:
 3. Real-world Application: Making the student able to apply the knowledge to real world circumstances. 
 """
     )
-    comment: str = Field(
-        description="Your comment on this question and why do you want to choose this question as an example."
+    reason: str = Field(
+        description="The reason why this answer is the answer of the question."
     )
     core_knowledge_points: List[str] = Field(
         description="The directly mentioned knowledge points presented in this question"

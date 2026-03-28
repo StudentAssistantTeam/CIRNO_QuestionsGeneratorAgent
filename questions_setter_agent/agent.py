@@ -1,9 +1,18 @@
 # adk dependencies
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.agents import LlmAgent
+from google.adk.planners import PlanReActPlanner
 # project dependencies
 from questions_setter_agent.config import settings
-from questions_setter_agent.prompt import agent_description
+from questions_setter_agent.prompt import (
+    questions_setter_agent_description,
+    questions_setter_agent_instruction
+)
+from questions_setter_agent.data_model import (
+    QuestionsSetterAgentOutputSchema, QuestionsSetterAgentInputSchema
+)
+from remote_agents.web_search_agent import web_search_agent
+from remote_agents.math_and_science_agent import academics_agent
 
 # Defining llm
 llm = LiteLlm(
@@ -15,5 +24,13 @@ llm = LiteLlm(
 questions_setter_agent = LlmAgent(
     model=llm,
     name="questions_setter_agent",
-    description=agent_description
+    description=questions_setter_agent_description,
+    instruction=questions_setter_agent_instruction,
+    input_schema=QuestionsSetterAgentInputSchema,
+    output_schema=QuestionsSetterAgentOutputSchema,
+    sub_agents=[
+        web_search_agent,
+        academics_agent
+    ],
+    planner=PlanReActPlanner(),
 )
