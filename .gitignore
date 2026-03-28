@@ -214,3 +214,4 @@ cirno_questions_generator_agent/.adk
 cirno_questions_generator_agent.env
 questions_features_analysis_agent.env
 questions_setter_agent.env
+remote_agents.env
