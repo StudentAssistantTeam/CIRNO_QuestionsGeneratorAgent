@@ -205,3 +205,12 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# adk
+cirno_questions_generator_agent/.adk
+*.db
+
+# env
+cirno_questions_generator_agent.env
+questions_features_analysis_agent.env
+questions_setter_agent.env

@@ -6,13 +6,14 @@ from google.adk.agents import (
     SequentialAgent
 )
 from google.adk.planners import PlanReActPlanner
+from google.adk.tools import agent_tool
 # project dependencies
 from questions_setter_agent.config import settings
 from questions_setter_agent.prompt import (
     questions_setter_agent_description,
     questions_setter_agent_instruction,
-    generator_converter_instruction,
-    generator_converter_description,
+    questions_planner_agent_description,
+    questions_planner_agent_instruction,
     investigator_instruction,
     investigator_description,
     refractor_description,
@@ -23,15 +24,16 @@ from questions_setter_agent.prompt import (
     questions_ordering_agent_instruction
 )
 from questions_setter_agent.data_model import (
-    QuestionsSetterAgentOutputSchema,
     StartupSchema,
-    FinalQuestionOutputSchema
+    FinalQuestionOutputSchema,
+    QuestionsSetterAgentOutputSchema
 )
 from remote_agents.web_search_agent import create_web_search_agent
 from remote_agents.math_and_science_agent import create_academics_agent
 from utility.shared_info import (
     QUESTIONS_KEY,
-    ERRORS_KEY
+    ERRORS_KEY,
+    QUESTION_PLAN
 )
 from tools.util_tools import (
     validate_result_questions_generation,
@@ -47,18 +49,25 @@ llm = LiteLlm(
 
 
 # Defining Agent
-# Converter Agent
-def create_generator_converter_agent():
+# Questions planner
+def create_questions_planner_agent():
+    # Conver agent to tools
+    web_search_agent = create_web_search_agent()
+    web_search_agent_tool = agent_tool.AgentTool(agent=web_search_agent)
+    academics_agent = create_academics_agent()
+    academics_agent_tool = agent_tool.AgentTool(agent=academics_agent)
+    # Create agents
     return LlmAgent(
         model=llm,
-        name="generator_converter_agent",
-        description=generator_converter_description,
-        instruction=generator_converter_instruction,
-        input_schema=QuestionsSetterAgentOutputSchema,
-        output_key=QUESTIONS_KEY,
+        name="questions_planner_agent",
+        description=questions_planner_agent_description,
+        instruction=questions_planner_agent_instruction,
+        input_schema=StartupSchema,
         tools=[
-            validate_result_questions_generation
-        ]
+            web_search_agent_tool,
+            academics_agent_tool
+        ],
+        output_key=QUESTION_PLAN
     )
 
 
@@ -69,18 +78,17 @@ def create_questions_generator_agent():
         name="questions_generator_agent",
         description=questions_setter_agent_description,
         instruction=questions_setter_agent_instruction,
-        input_schema=StartupSchema,
-        sub_agents=[
-            create_web_search_agent(),
-            create_academics_agent(),
-            create_generator_converter_agent()
-        ],
-        planner=PlanReActPlanner(),
+        output_key=QUESTIONS_KEY
     )
 
 
 # Investigator Agent
 def create_investigator_agent():
+    # Create agents
+    web_search_agent = create_web_search_agent()
+    web_search_agent_tool = agent_tool.AgentTool(agent=web_search_agent)
+    academics_agent = create_academics_agent()
+    academics_agent_tool = agent_tool.AgentTool(agent=academics_agent)
     return LlmAgent(
         model=llm,
         name="investigator_agent",
@@ -88,12 +96,10 @@ def create_investigator_agent():
         description=investigator_description,
         planner=PlanReActPlanner(),
         output_key=ERRORS_KEY,
-        sub_agents=[
-            create_web_search_agent(),
-            create_academics_agent(),
-        ],
         tools=[
-            exit_loop
+            exit_loop,
+            web_search_agent_tool,
+            academics_agent_tool
         ]
     )
 
@@ -143,8 +149,9 @@ def create_questions_setter_agent():
         name="questions_setter_agent",
         description=main_agent_description,
         sub_agents=[
+            create_questions_planner_agent(),
             create_questions_generator_agent(),
-            create_checking_agent,
+            create_checking_agent(),
             create_questions_ordering_agent()
         ]
     )

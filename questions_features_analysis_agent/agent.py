@@ -17,7 +17,8 @@ from questions_features_analysis_agent.data_model import (
 )
 from tools.util_tools import validate_result_questions_generation
 from utility.shared_info import (
-    ANALYSIS_KEY
+    ANALYSIS_KEY,
+    ANALYSIS_RAW
 )
 
 # Define litellm
@@ -52,7 +53,5 @@ def create_analysis_agent():
         description=questions_features_analysis_agent_description,
         planner=FeaturesAnalysisAgentPlanner(),
         input_schema=QuestionsFeaturesAnalysisAgentInputSchema,
-        sub_agents=[
-            create_analysis_result_converter_agent()
-        ]
+        output_key=ANALYSIS_RAW
     )

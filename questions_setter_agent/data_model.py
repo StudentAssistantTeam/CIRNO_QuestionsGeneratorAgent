@@ -66,6 +66,13 @@ class StartupSchema(BaseModel):
     )
     topic: str = Field(
         description="The topic of the questions that is going to be generated"
+    ),
+    difficulty_description: str = Field(
+        description=
+        """
+        describe the difficulty of the question that will be generated 
+        (e.g. the question should be suitable for high school students)
+        """
     )
 
 

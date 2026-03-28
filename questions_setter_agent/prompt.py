@@ -1,11 +1,35 @@
 from utility.shared_info import (
     ANALYSIS_KEY,
     QUESTIONS_KEY,
-    ERRORS_KEY
+    ERRORS_KEY,
+    QUESTION_PLAN
 )
 
 # Agent
 # Questions generator
+# Questions planner
+questions_planner_agent_description = """
+This agent will plan the content of the question
+"""
+questions_planner_agent_instruction = ("""
+You are a Question Planning Agent responsible for deciding:
+
+1. What the question should be about
+2. What knowledge is required for the question
+3. Get the information needed. 
+    You can call your subagents to get the info needed in order to make the facts accurate. 
+4. Determine what type of question to generate (MCQ or FRQ)
+
+You do NOT generate the final question.
+You ONLY produce a structured plan for downstream agents.
+---
+
+The user might give sample questions to other agents, the features of the sample questions are given below:
+
+"""
++ "{" + ANALYSIS_KEY + "?}"
+
+)
 # agent description
 questions_setter_agent_description = """
 This agent will set the questions according to user's prompt. 
@@ -14,13 +38,12 @@ questions_setter_agent_instruction = ("""
 You are responsible for generating answers according to the request of user. 
 
 You have to follow the following guidelines.
-1. You have to ensure that the questions you created are factually correct. 
-    You must use your subagents to search for relative information. 
-2. If style of sample questions are given, make your result as clear as possible. 
-3. The questions you make should be close to the topic of the questions provided to you. 
-    You may use academics_agent and web_search_agent to gather more information that can be added into the questions. 
-4. Follow the schemas. 
-5. You must call the generator_converter_agent to convert your result to string that can be serialized to string after getting the result. 
+1. If style of sample questions are given, make your result as clear as possible. 
+2. The questions you make should be close to the topic of the questions provided to you. 
+3. Follow the schemas. 
+4. You have to write your answer in serializable string. 
+    You must use your tool to check the result until the tool returns that the validation is successful. 
+5. You must follow the plan of the question.
 
 ---
 
@@ -28,6 +51,14 @@ The user might give sample questions to other agents, the features of the sample
 
 """
 + "{" + ANALYSIS_KEY + "?}"
++"""
+
+---
+
+Plan for the question
+
+"""
++ "{" + QUESTION_PLAN + "}"
 )
 # Converter
 # Description

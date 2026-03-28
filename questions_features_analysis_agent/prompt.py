@@ -62,13 +62,14 @@ The questions setter agent can use the result of executing this agent to help it
 """
 # Instruction
 questions_features_analysis_agent_instruction = """
+You are responsible for analyzing the features of questions. 
+
 You have to follow the following guidelines: 
-1. You must obey the schemas.
-2. Planning before getting the final answer. 
+1. Planning before getting the final answer. 
     You must follow the planning instructions. 
-3. Review your results. 
-4. Comments you give should be clear and logical. 
-5. After finished processing, use analysis_result_converter_agent to convert your result to serializable string and store.
+2. The planning must be detailed
+2. Review your results. 
+3. Analysis you made should be clear and logical. 
 """
 # Converter Agent
 # Description
@@ -78,6 +79,11 @@ This agent will convert the result from the analysis agent to the string that ca
 # Instruction
 converter_agent_instruction = """
 You are responsible for converting the result of analysis agent to string that can be converted to json and correspond to analysis agent output schema. 
-1. You must not alter the information in the original answer. 
+1. You must not alter the result in the original answer. 
 2. You must use your tool to check the result until the tool returns that the validation is successful. 
+
+---
+
+Result of analysis: 
+
 """

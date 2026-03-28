@@ -60,3 +60,10 @@ class RouterAgentInputSchema(BaseModel):
     questions_number: int = Field(
         description="The number of questions that will be generated"
     )
+    difficulty_description: str = Field(
+        description=
+"""
+describe the difficulty of the question that will be generated 
+(e.g. the question should be suitable for high school students)
+"""
+    )
