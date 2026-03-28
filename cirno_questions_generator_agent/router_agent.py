@@ -3,6 +3,7 @@ from logging import getLogger
 from google.adk.models.lite_llm import LiteLlm
 from google.adk.agents import LlmAgent
 from google.adk.planners import PlanReActPlanner
+from google.adk.agents.callback_context import CallbackContext
 # project dependencies
 from cirno_questions_generator_agent.config import settings
 from cirno_questions_generator_agent.prompt import (
@@ -12,27 +13,37 @@ from cirno_questions_generator_agent.data_model import (
     RouterAgentInputSchema
 )
 from questions_features_analysis_agent.agent import analysis_agent
+from questions_setter_agent.agent import questions_setter_agent
+from utility.shared_info import ANALYSIS_KEY
 
 logger = getLogger("Questions Setter Agent")
 
 
+# --- Before Agent Callback ---
+def update_initial_topic_state(callback_context: CallbackContext):
+    callback_context.state[ANALYSIS_KEY] = callback_context.state.get(
+        ANALYSIS_KEY,
+        'No sample answer provided'
+    )
+
+
 # Agent
-class agent:
-    def __init__(self):
-        # Defining base llm
-        self.llm = LiteLlm(
-            model=settings.llm_model_name,
-            api_base=settings.llm_base_url,
-            api_key=settings.llm_api_key
-        )
-        # Defining base agent
-        self.router_agent = LlmAgent(
-            model=self.llm,
-            name="questions_setter_router_agent",
-            description=router_agent_description,
-            input_schema=RouterAgentInputSchema,
-            sub_agents=[
-                analysis_agent
-            ],
-            planner=PlanReActPlanner()
-        )
+# Defining base llm
+llm = LiteLlm(
+    model=settings.llm_model_name,
+    api_base=settings.llm_base_url,
+    api_key=settings.llm_api_key
+)
+# Defining base agent
+router_agent = LlmAgent(
+    model=llm,
+    name="questions_setter_router_agent",
+    description=router_agent_description,
+    input_schema=RouterAgentInputSchema,
+    sub_agents=[
+        analysis_agent,
+        questions_setter_agent
+    ],
+    planner=PlanReActPlanner(),
+    before_agent_callback=update_initial_topic_state
+)

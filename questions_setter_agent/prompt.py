@@ -103,8 +103,35 @@ The questions generated:
 
 ---
 
-The questions generated: 
+Comments of investigator: 
 
 """
 + "{" + ERRORS_KEY + "}"
+)
+# Checking agent
+checking_agent_description = """
+This agent will keep refining the questions until certain conditions are met. 
+"""
+# Main agent
+main_agent_description = """
+This agent will generate questions and check the questions generated. 
+"""
+# Questions ordering agent
+# Description
+questions_ordering_agent_description = """
+This agent will be responsible for processing the result and present the final answer. 
+"""
+questions_ordering_agent_instruction = ("""
+You will be responsible for processing the result and prepare the final answer.
+
+Follow the guidelines below: 
+1. You must follow the output schema. 
+2. Convert the questions generated to the format allowed by the output schema. 
+
+---
+
+Questions generated:
+
+"""
++ "{" + QUESTIONS_KEY + "?}"
 )

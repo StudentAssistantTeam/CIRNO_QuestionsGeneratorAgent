@@ -1,6 +1,10 @@
 # adk dependencies
 from google.adk.models.lite_llm import LiteLlm
-from google.adk.agents import LlmAgent
+from google.adk.agents import (
+    LlmAgent,
+    LoopAgent,
+    SequentialAgent
+)
 from google.adk.planners import PlanReActPlanner
 # project dependencies
 from questions_setter_agent.config import settings
@@ -12,11 +16,16 @@ from questions_setter_agent.prompt import (
     investigator_instruction,
     investigator_description,
     refractor_description,
-    refractor_instruction
+    refractor_instruction,
+    checking_agent_description,
+    main_agent_description,
+    questions_ordering_agent_description,
+    questions_ordering_agent_instruction
 )
 from questions_setter_agent.data_model import (
     QuestionsSetterAgentOutputSchema,
-    StartupSchema
+    StartupSchema,
+    FinalQuestionOutputSchema
 )
 from remote_agents.web_search_agent import web_search_agent
 from remote_agents.math_and_science_agent import academics_agent
@@ -88,5 +97,32 @@ refractor_agent = LlmAgent(
     output_key=QUESTIONS_KEY,
     tools=[
         validate_result_questions_generation
+    ]
+)
+# Questions ordering agen
+questions_ordering_agent = LlmAgent(
+    model=llm,
+    name="questions_ordering_agent",
+    description=questions_ordering_agent_description,
+    instruction=questions_ordering_agent_instruction,
+    output_schema=FinalQuestionOutputSchema
+)
+# Continuous checking
+checking_agent = LoopAgent(
+    name="checking_agent",
+    description=checking_agent_description,
+    sub_agents=[
+        investigator_agent,
+        refractor_agent
+    ],
+    max_iterations=5
+)
+# Sequential agent
+questions_setter_agent = SequentialAgent(
+    name="questions_setter_agent",
+    description=main_agent_description,
+    sub_agents=[
+        questions_generator_agent,
+        checking_agent
     ]
 )
