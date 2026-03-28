@@ -2,38 +2,6 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 
 
-# Agent input schema
-class QuestionsFeaturesAnalysisAgentInputSchema(BaseModel):
-    sample_questions: List[str] = Field(
-        description="The sample questions provided to you to analyse the features"
-    )
-
-
-# Basic Metadata
-class QuestionsMetadata(BaseModel):
-    question_type: str = Field(
-        description="The type of sample questions (e.g. multiple-choice/free-response/fill-in-the-blank)"
-    )
-    subject_area: str = Field(
-        description="The subject area (e.g. mathematics, physics, etc.)"
-    )
-    reading_material: Optional[str] = Field(
-        description="The reading material, only type in if the questions are all based on one passage."
-    )
-    special_formats: List[str] = Field(
-        description="""
-Descriptions of different kinds of special formats of questions appear in sample questions.
-Describe these special formats (e.g. more than one answer choice is valid, etc.). 
-        """
-    )
-    special_attributes: List[str] = Field(
-        description="""
-Descriptions of different special attributes of questions appear in sample questions. 
-Describe these special attributes (e.g. 5 options for each question, 250 minimum word count each question, An article needed, etc.)
-        """
-    )
-
-
 # Option
 class Option(BaseModel):
     option_identifier: str = Field(
@@ -66,6 +34,44 @@ Each objective should be one of the three objectives:
     )
     comment: str = Field(
         description="Your comment on this question and why do you want to choose this question as an example."
+    )
+    core_knowledge_points: List[str] = Field(
+        description="The directly mentioned knowledge points presented in this question"
+    )
+    secondary_knowledge_points: Optional[List[str]] = Field(
+        description="The knowledge points that are not directly mentioned but needed to solve this question"
+    )
+
+
+# Agent input schema
+class QuestionsFeaturesAnalysisAgentInputSchema(BaseModel):
+    sample_questions: List[Question] = Field(
+        description="The sample questions provided to you to analyse the features"
+    )
+
+
+# Basic Metadata
+class QuestionsMetadata(BaseModel):
+    question_type: str = Field(
+        description="The type of sample questions (e.g. multiple-choice/free-response/fill-in-the-blank)"
+    )
+    subject_area: str = Field(
+        description="The subject area (e.g. mathematics, physics, etc.)"
+    )
+    reading_material: Optional[str] = Field(
+        description="The reading material, only type in if the questions are all based on one passage."
+    )
+    special_formats: List[str] = Field(
+        description="""
+Descriptions of different kinds of special formats of questions appear in sample questions.
+Describe these special formats (e.g. more than one answer choice is valid, etc.). 
+        """
+    )
+    special_attributes: List[str] = Field(
+        description="""
+Descriptions of different special attributes of questions appear in sample questions. 
+Describe these special attributes (e.g. 5 options for each question, 250 minimum word count each question, An article needed, etc.)
+        """
     )
 
 
@@ -106,12 +112,6 @@ class Trap(BaseModel):
 
 # Knowledge and skills required
 class QuestionsKnowledgeAndSkill(BaseModel):
-    core_knowledge_points: List[str] = Field(
-        description="The directly mentioned knowledge points presented in these questions"
-    )
-    secondary_knowledge_points: Optional[List[str]] = Field(
-        description="The knowledge points that are not directly mentioned but needed to solve the questions"
-    )
     cognitive_skill_assessed: List[CognitiveSkill] = Field(
         description="The cognitive skills required to solve these questions."
     )
