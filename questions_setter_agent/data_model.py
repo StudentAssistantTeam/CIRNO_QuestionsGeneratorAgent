@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from typing import Optional, List
 
 
@@ -10,6 +10,9 @@ class Option(BaseModel):
     option_description: str = Field(
         description="The text content of the option (e.g. the 'George Washington' in 'A. George Washington')"
     )
+    is_correct: bool = Field(
+        description="Whether this option is correct"
+    )
 
 
 # Questions Data Structure
@@ -20,8 +23,8 @@ class Question(BaseModel):
     options: Optional[List[Option]] = Field(
         description="The options of this question if this question is a mcq."
     )
-    answer: str = Field(
-        description="The answer to the question. If this is a MCQ, type in the option identifier of the correct option."
+    answer: Optional[str] = Field(
+        description="The answer of the free_response question. "
     )
     objective: List[str] = Field(
         description="""
@@ -50,6 +53,17 @@ It can help the investigator agent understand why you want to make this question
     relative_material: Optional[str] = Field(
         description="The reading material, only type in if the question is based on one material (e.g. the reading passage)."
     )
+
+    @model_validator(mode='after')
+    def validate_answer_matches_options(self) -> 'Question':
+        """Ensure that for MCQ questions, answer is one of the option identifiers."""
+        if self.options:
+            valid_identifiers = [opt.option_identifier for opt in self.options]
+            if self.answer not in valid_identifiers:
+                raise ValueError(
+                    f"Answer '{self.answer}' must be one of the option identifiers: {valid_identifiers}"
+                )
+        return self
 
 
 # output schema
@@ -84,8 +98,10 @@ class FinalQuestion(BaseModel):
     options: Optional[List[Option]] = Field(
         description="The options of this question if this question is a mcq."
     )
-    answer: str = Field(
-        description="The answer to the question. If this is a MCQ, type in the option identifier of the correct option."
+    answer: Optional[str] = Field(
+        description="""
+        If it is a free_response question, the answer would appear here. 
+        """
     )
     objective: List[str] = Field(
         description="""
