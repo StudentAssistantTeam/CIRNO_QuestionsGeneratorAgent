@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "google-adk[a2a]>=1.28.0",
-    "litellm>=1.82.6",
+    "litellm==1.82.6",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.13.1",
 ]
