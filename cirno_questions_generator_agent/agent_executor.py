@@ -19,7 +19,7 @@ from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from google.genai import types
 # others
-from agent import root_agent
+from cirno_questions_generator_agent.agent import root_agent
 
 
 class agent_executor(AgentExecutor):

@@ -16,3 +16,6 @@ dependencies = [
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[project.scripts]
+questions_generator_agent_app = "cirno_questions_generator_agent.main:run"
