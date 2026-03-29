@@ -54,17 +54,6 @@ It can help the investigator agent understand why you want to make this question
         description="The reading material, only type in if the question is based on one material (e.g. the reading passage)."
     )
 
-    @model_validator(mode='after')
-    def validate_answer_matches_options(self) -> 'Question':
-        """Ensure that for MCQ questions, answer is one of the option identifiers."""
-        if self.options:
-            valid_identifiers = [opt.option_identifier for opt in self.options]
-            if self.answer not in valid_identifiers:
-                raise ValueError(
-                    f"Answer '{self.answer}' must be one of the option identifiers: {valid_identifiers}"
-                )
-        return self
-
 
 # output schema
 class QuestionsSetterAgentOutputSchema(BaseModel):
@@ -128,6 +117,6 @@ Each objective should be one of the three objectives:
 
 # Final question output schema
 class FinalQuestionOutputSchema(BaseModel):
-    question_numbers: List[FinalQuestion] = Field(
+    questions: List[FinalQuestion] = Field(
         description="The final version of the questions to be provided to user."
     )

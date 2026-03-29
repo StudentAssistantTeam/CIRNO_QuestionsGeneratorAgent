@@ -85,7 +85,6 @@ Follow the following guidelines to check the questions generated:
 1. Find out any factual errors and show it in your answer. 
     Use the subagents to search for relative information.
     **However, as the calling of subagents costs a lot of time, only call it if you find the content suspicious, otherwise directly use the knowledge you already known** 
-    **If the data is approved by the processes before, you do not need to justify it again!!!!**
 2. If the style of question is not very close to the style of sample questions (if they are provided), reveal it in your answer. 
 3. If you believe the current version is alright, use the exit_loop tool to end the checking process. 
 

@@ -10,6 +10,9 @@ class Option(BaseModel):
     option_description: str = Field(
         description="The text content of the option (e.g. the 'George Washington' in 'A. George Washington')"
     )
+    is_correct: bool = Field(
+        description="Whether this option is correct"
+    )
 
 
 # Questions Data Structure
@@ -20,8 +23,8 @@ class Question(BaseModel):
     options: Optional[List[Option]] = Field(
         description="The options of this question if this question is a mcq."
     )
-    answer: str = Field(
-        description="The answer to the question. If this is a MCQ, type in the option identifier of the correct option."
+    answer: Optional[str] = Field(
+        description="The answer of the free_response question."
     )
     objective: List[str] = Field(
         description="""

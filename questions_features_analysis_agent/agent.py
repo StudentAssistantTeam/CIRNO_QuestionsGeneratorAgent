@@ -53,7 +53,6 @@ def create_analysis_agent():
         instruction=questions_features_analysis_agent_instruction,
         description=questions_features_analysis_agent_description,
         planner=FeaturesAnalysisAgentPlanner(),
-        input_schema=QuestionsFeaturesAnalysisAgentInputSchema,
         output_key=ANALYSIS_RAW
     )
 
