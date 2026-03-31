@@ -17,6 +17,9 @@ class Option(BaseModel):
 
 # Questions Data Structure
 class Question(BaseModel):
+    question_name: str = Field(
+        description="The name of the question."
+    )
     stem: str = Field(
         description="The main part of the question."
     )

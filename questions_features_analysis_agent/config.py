@@ -3,7 +3,7 @@ from pathlib import Path
 
 # env file path config
 BASE_DIR = Path(__file__).resolve().parent.parent
-ENV_FILE_PATH = BASE_DIR / "questions_features_analysis_agent.env"
+ENV_FILE_PATH = BASE_DIR / "cirno_questions_generator_agent.env"
 
 
 # Settings
@@ -16,7 +16,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=ENV_FILE_PATH,
         env_file_encoding="utf-8",
-        extra="allow"
+        extra="allow",
+        env_prefix="ANALYSIS"
     )
 
 

@@ -21,19 +21,23 @@ from questions_setter_agent.prompt import (
     checking_agent_description,
     main_agent_description,
     questions_ordering_agent_description,
-    questions_ordering_agent_instruction
+    questions_ordering_agent_instruction,
+    correction_converter_agent_description,
+    correction_converter_agent_instruction
 )
 from questions_setter_agent.data_model import (
     StartupSchema,
     FinalQuestionOutputSchema,
-    QuestionsSetterAgentOutputSchema
+    QuestionsSetterAgentOutputSchema,
+    InvestigatorConverterOutputSchema
 )
 from remote_agents.web_search_agent import create_web_search_agent
 from remote_agents.math_and_science_agent import create_academics_agent
 from utility.shared_info import (
     QUESTIONS_KEY,
     ERRORS_KEY,
-    QUESTION_PLAN
+    QUESTION_PLAN,
+    CORRECTION_LIST
 )
 from tools.util_tools import (
     validate_result_questions_generation,
@@ -105,6 +109,30 @@ def create_investigator_agent():
     )
 
 
+# Investigator converter agent
+def create_investigator_converter_agent():
+    return LlmAgent(
+        model=llm,
+        name="investigator_converter_agent",
+        output_key=CORRECTION_LIST,
+        description=correction_converter_agent_description,
+        instruction=correction_converter_agent_instruction,
+        output_schema=InvestigatorConverterOutputSchema
+    )
+
+
+# Investigator Sequential System
+def create_investigator_sequential_agent():
+    return SequentialAgent(
+        name="investigator_sequential_agent",
+        description=investigator_description,
+        sub_agents=[
+            create_investigator_agent(),
+            create_investigator_converter_agent()
+        ]
+    )
+
+
 # Refractor Agent
 def create_refractor_agent():
     return LlmAgent(
@@ -134,7 +162,7 @@ def create_checking_agent():
         name="checking_agent",
         description=checking_agent_description,
         sub_agents=[
-            create_investigator_agent(),
+            create_investigator_sequential_agent(),
             create_refractor_agent()
         ],
         max_iterations=5

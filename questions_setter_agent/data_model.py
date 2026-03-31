@@ -17,6 +17,9 @@ class Option(BaseModel):
 
 # Questions Data Structure
 class Question(BaseModel):
+    question_name: str = Field(
+        description="The name of the question."
+    )
     stem: str = Field(
         description="The main part of the question."
     )
@@ -81,6 +84,9 @@ class StartupSchema(BaseModel):
 
 # Final ver Questions Data Structure
 class FinalQuestion(BaseModel):
+    question_name: str = Field(
+        description="The name of the question."
+    )
     stem: str = Field(
         description="The main part of the question."
     )
@@ -119,4 +125,21 @@ Each objective should be one of the three objectives:
 class FinalQuestionOutputSchema(BaseModel):
     questions: List[FinalQuestion] = Field(
         description="The final version of the questions to be provided to user."
+    )
+
+
+# Question Correction Schema
+class QuestionCorrectionSchema(BaseModel):
+    question_name: str = Field(
+        description="The name of the question. **Must be the question name of one of the questions generated.**"
+    )
+    correction_suggestion: str = Field(
+        description="The suggestion of the correction of this question provided by the investigator"
+    )
+
+
+# Converter output schema
+class InvestigatorConverterOutputSchema(BaseModel):
+    questions_waiting_to_correct: List[QuestionCorrectionSchema] = Field(
+        description="The questions waiting to get corrected"
     )

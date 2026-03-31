@@ -2,7 +2,8 @@ from utility.shared_info import (
     ANALYSIS_KEY,
     QUESTIONS_KEY,
     ERRORS_KEY,
-    QUESTION_PLAN
+    QUESTION_PLAN,
+    CORRECTION_LIST
 )
 
 # Agent
@@ -117,6 +118,7 @@ Follow the following guidelines:
 2. For questions you change, also change comment field of the question. 
 3. Use your tool to check whether the format of the questions is correct. 
     You can only return the final answer if it the validation is successful. 
+4. Do not just type in the questions you corrected into your answer. 
 
 ---
 
@@ -140,6 +142,15 @@ Comments of investigator:
 
 """
 + "{" + ERRORS_KEY + "}"
++
+"""
+
+---
+
+Questions needed to get corrected:
+
+"""
++ "{" + CORRECTION_LIST + "}"
 )
 # Checking agent
 checking_agent_description = """
@@ -165,6 +176,34 @@ Follow the guidelines below:
 
 Questions generated:
 
+"""
++ "{" + QUESTIONS_KEY + "?}"
+)
+# Correction converter agent
+# Description
+correction_converter_agent_description = """
+This agent will convert the comment of the investigator agent into structured data. 
+"""
+# Instruction
+correction_converter_agent_instruction = ("""
+You have to convert the comment of the investigator agent into structured result. 
+
+Follow the following guidelines: 
+1. Follow the output schema. 
+2. Check the questions generated provided to you to find which question has to change. 
+3. Write the correction suggestion according to the comment provided by the investigator agent. 
+
+---
+
+Comments given by investigator agent: 
+"""
++ "{" + ERRORS_KEY + "}"
++
+"""
+
+---
+
+Questions generated: 
 """
 + "{" + QUESTIONS_KEY + "?}"
 )
